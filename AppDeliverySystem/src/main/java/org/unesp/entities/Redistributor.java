@@ -1,8 +1,8 @@
-package entities;
+package org.unesp.entities;
 
 import java.util.List;
 
-public class Redistributor {
+public class Redistributor implements Runnable{
     private List<Delivery> listOfDeliveries;
     private Vehicle currentVehicle;
 
@@ -25,5 +25,9 @@ public class Redistributor {
 
     public void setCurrentVehicle(Vehicle currentVehicle) {
         this.currentVehicle = currentVehicle;
+    }
+
+    @Override
+    public void run() {
     }
 }

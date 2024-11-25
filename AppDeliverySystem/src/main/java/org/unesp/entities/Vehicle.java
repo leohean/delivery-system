@@ -1,8 +1,8 @@
-package entities;
+package org.unesp.entities;
 
 import java.util.List;
 
-public class Vehicle implements Runnable{
+public class Vehicle implements Runnable {
     private Integer id;
     private Integer maxSpace;
     private List<Delivery> listOfDeliveries;
@@ -11,11 +11,6 @@ public class Vehicle implements Runnable{
         this.id = id;
         this.maxSpace = maxSpace;
         this.listOfDeliveries = listOfDeliveries;
-    }
-
-    @Override
-    public void run(){
-        System.out.println("Indo fazer entregas");
     }
 
     public Integer getId() {
@@ -40,5 +35,10 @@ public class Vehicle implements Runnable{
 
     public void setListOfDeliveries(List<Delivery> listOfDeliveries) {
         this.listOfDeliveries = listOfDeliveries;
+    }
+
+    @Override
+    public void run(){
+        System.out.printf("=> Veículo #%d Indo fazer entregas.\n", this.id);
     }
 }

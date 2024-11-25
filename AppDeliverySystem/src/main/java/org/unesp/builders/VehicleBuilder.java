@@ -1,6 +1,6 @@
-package builders;
+package org.unesp.builders;
 
-import entities.Vehicle;
+import org.unesp.entities.Vehicle;
 
 import java.util.ArrayList;
 

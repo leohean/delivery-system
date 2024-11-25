@@ -1,8 +1,8 @@
-package entities;
+package org.unesp.entities;
 
 import java.time.LocalDate;
 
-public class Delivery {
+public class Delivery implements Runnable {
     private Integer id;
     private Redistributor redistributorOrigin;
     private Redistributor redistributorDestination;
@@ -75,5 +75,10 @@ public class Delivery {
 
     public void setAssociatedVehicle(Vehicle associatedVehicle) {
         this.associatedVehicle = associatedVehicle;
+    }
+
+    @Override
+    public void run() {
+
     }
 }
