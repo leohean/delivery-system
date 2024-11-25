@@ -1,7 +1,10 @@
 package org.unesp;
 
+import builders.VehicleBuilder;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+        VehicleBuilder vehicleBuilder = new VehicleBuilder();
     }
 }

@@ -2,7 +2,7 @@ package entities;
 
 import java.util.List;
 
-public class Vehicle {
+public class Vehicle implements Runnable{
     private Integer id;
     private Integer maxSpace;
     private List<Delivery> listOfDeliveries;
@@ -11,6 +11,11 @@ public class Vehicle {
         this.id = id;
         this.maxSpace = maxSpace;
         this.listOfDeliveries = listOfDeliveries;
+    }
+
+    @Override
+    public void run(){
+        System.out.println("Indo fazer entregas");
     }
 
     public Integer getId() {
