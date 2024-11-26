@@ -8,7 +8,7 @@ import org.unesp.entities.Vehicle;
 
 public class Main {
     public static void main(String[] args) {
-        VehicleBuilder vehicleBuilder = new VehicleBuilder();
+        VehicleBuilder vehicleBuilder = new VehicleBuilder(5);
 
         CircularList cl = new CircularList();
 

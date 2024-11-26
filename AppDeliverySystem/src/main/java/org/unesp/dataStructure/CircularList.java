@@ -35,6 +35,16 @@ public class CircularList {
         }
     }
 
+    public Redistributor getRedistributorAtPosition(int position){
+        int cont = 0;
+        Node current = head;
+        do{
+            current = current.next;
+            cont++;
+        }while(cont != position);
+        return current.redistributor;
+    }
+
     public Redistributor getNextRedistributor(Redistributor redistributor){
         Node current = head;
         do{
