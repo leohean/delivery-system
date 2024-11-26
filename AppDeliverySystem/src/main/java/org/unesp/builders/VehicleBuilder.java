@@ -17,7 +17,7 @@ public class VehicleBuilder{
         for(int i = 0; i < numVehicles; i++){
             int maxSpace = ThreadLocalRandom.current().nextInt(10, 51);
 
-            Runnable vehicle = new Vehicle(i,i, new ArrayList<>());
+            Runnable vehicle = new Vehicle(i, new ArrayList<>());
             listVehicles.add(vehicle);
 
             threadsVehicle.add(new Thread(listVehicles.get(i)));

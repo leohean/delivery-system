@@ -3,7 +3,8 @@ package org.unesp.entities;
 import java.time.LocalDate;
 
 public class Delivery implements Runnable {
-    private Integer id;
+    private static int counter = 0;
+    private String id;
     private Redistributor redistributorOrigin;
     private Redistributor redistributorDestination;
     private LocalDate originTime;
@@ -11,22 +12,23 @@ public class Delivery implements Runnable {
     private LocalDate finishTime;
     private Vehicle associatedVehicle;
 
-    public Delivery(Integer id, Redistributor redistributorOrigin, Redistributor redistributorDestination, LocalDate originTime, LocalDate loadTime, LocalDate finishTime, Vehicle associatedVehicle) {
-        this.id = id;
+    public Delivery(Redistributor redistributorOrigin, Redistributor redistributorDestination, LocalDate originTime, LocalDate loadTime, LocalDate finishTime, Vehicle associatedVehicle) {
         this.redistributorOrigin = redistributorOrigin;
         this.redistributorDestination = redistributorDestination;
         this.originTime = originTime;
         this.loadTime = loadTime;
         this.finishTime = finishTime;
         this.associatedVehicle = associatedVehicle;
+        setId(counter);
+        counter++;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.id = "D" + counter;
     }
 
     public Redistributor getRedistributorOrigin() {

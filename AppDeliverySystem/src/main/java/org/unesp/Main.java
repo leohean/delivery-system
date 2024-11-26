@@ -12,9 +12,9 @@ public class Main {
 
         CircularList cl = new CircularList();
 
-        Vehicle v1 = new Vehicle(1, 10, null);
-        Vehicle v2 = new Vehicle(2, 10, null);
-        Vehicle v3 = new Vehicle(3, 10, null);
+        Vehicle v1 = new Vehicle(10, null);
+        Vehicle v2 = new Vehicle(10, null);
+        Vehicle v3 = new Vehicle(10, null);
         //Adds data to the list
         Redistributor r1 = new Redistributor(null, v1);
         Redistributor r2 = new Redistributor(null, v2);

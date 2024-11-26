@@ -42,7 +42,8 @@ public class Redistributor implements Runnable{
     @Override
     public String toString() {
         return "Redistributor{" +
-                "id=" + id +
+                "id='" + id + '\'' +
+                ", currentVehicle=" + currentVehicle +
                 '}';
     }
 

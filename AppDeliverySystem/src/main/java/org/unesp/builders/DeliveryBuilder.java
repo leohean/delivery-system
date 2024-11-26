@@ -24,7 +24,7 @@ public class DeliveryBuilder {
         Redistributor redistributorDest = RedistributorBuilder.getCircularList().getRedistributorAtPosition(origin);
 
         for(int i = 0; i < numDeliveries; i++){
-            Runnable delivery = new Delivery(i,redistributorOrigin, redistributorDest, LocalDate.now(), null, null, null);
+            Runnable delivery = new Delivery(redistributorOrigin, redistributorDest, LocalDate.now(), null, null, null);
             listDeliveries.add(delivery);
 
             threadsVehicle.add(new Thread(listDeliveries.get(i)));
