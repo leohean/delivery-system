@@ -4,14 +4,6 @@ import org.unesp.entities.Redistributor;
 
 public class CircularList {
 
-    public class Node{
-        Redistributor redistributor;
-        Node next;
-        public Node(Redistributor redistributor) {
-            this.redistributor = redistributor;
-        }
-    }
-
     //Declaring head and tail pointer as null.
     public Node head = null;
     public Node tail = null;
