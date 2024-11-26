@@ -80,6 +80,16 @@ public class Delivery implements Runnable {
     }
 
     @Override
+    public String toString() {
+        return "Delivery{" +
+                "id='" + id + '\'' +
+                ", redistributorOrigin=" + redistributorOrigin +
+                ", redistributorDestination=" + redistributorDestination +
+                ", associatedVehicle=" + associatedVehicle +
+                '}';
+    }
+
+    @Override
     public void run() {
 
     }

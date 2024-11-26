@@ -8,54 +8,52 @@ public class CircularList {
     public Node head = null;
     public Node tail = null;
 
-    public void add(Redistributor redistributor){
+    public void add(Redistributor redistributor) {
 
         Node newNode = new Node(redistributor);
 
-        if(head == null) {
+        if (head == null) {
             head = newNode;
             tail = newNode;
-            newNode.next = head;
-        }
-        else {
+            newNode.setNext(head);
+        } else {
             //tail will point to new node.
-            tail.next = newNode;
+            tail.setNext(newNode);
             //New node will become new tail.
             tail = newNode;
             //Since, it is circular linked list tail will point to head.
-            tail.next = head;
+            tail.setNext(head);
         }
     }
 
-    public Redistributor getRedistributorAtPosition(int position){
+    public Redistributor getRedistributorAtPosition(int position) {
         int cont = 0;
         Node current = head;
-        do{
-            current = current.next;
+        do {
+            current = current.getNext();
             cont++;
-        }while(cont != position);
-        return current.redistributor;
+        } while (cont != position);
+        return current.getRedistributor();
     }
 
-    public Redistributor getNextRedistributor(Redistributor redistributor){
+    public Redistributor getNextRedistributor(Redistributor redistributor) {
         Node current = head;
-        do{
-            current = current.next;
-        }while(current.redistributor != redistributor);
-        return current.next.redistributor;
+        do {
+            current = current.getNext();
+        } while (!current.getRedistributor().equals(redistributor));
+        return current.getNext().getRedistributor();
     }
 
     public void display() {
         Node current = head;
-        if(head == null) {
+        if (head == null) {
             System.out.println("List is empty");
-        }
-        else {
+        } else {
             System.out.println("Nodes of the circular linked list: ");
-            do{
-                System.out.println(" "+ current.redistributor);
-                current = current.next;
-            }while(current != head);
+            do {
+                System.out.println(" " + current.getRedistributor());
+                current = current.getNext();
+            } while (current != head);
             System.out.println();
         }
     }
