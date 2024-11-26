@@ -5,9 +5,15 @@ import org.unesp.dataStructure.CircularList;
 import org.unesp.entities.Delivery;
 import org.unesp.entities.Redistributor;
 import org.unesp.entities.Vehicle;
+import org.unesp.util.ParameterValidator;
+
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        var parameterValidator = new ParameterValidator(args);
+        Map<Character, Integer> argsMap = parameterValidator.getParametersMap();
+
         VehicleBuilder vehicleBuilder = new VehicleBuilder(5);
 
         CircularList cl = new CircularList();

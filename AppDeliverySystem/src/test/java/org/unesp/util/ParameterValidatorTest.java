@@ -37,6 +37,15 @@ class ParameterValidatorTest {
     }
 
     @Test
+    void shouldValidateIfPIsGreaterThanAThatIsGreaterThanC() {
+        String[] args = {"S5", "C7", "P1", "A4"};
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new ParameterValidator(args);
+        });
+    }
+
+    @Test
     void mapShouldHaveFourValidValues() {
         String[] args = {"S5", "C3", "P50", "A5"};
         var parameterValidator = new ParameterValidator(args);

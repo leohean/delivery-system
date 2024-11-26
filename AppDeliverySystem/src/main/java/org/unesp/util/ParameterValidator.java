@@ -2,7 +2,6 @@ package org.unesp.util;
 
 import org.unesp.exceptions.InvalidParameterCountException;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ public class ParameterValidator {
         this.args = args;
         parametersMap = new HashMap<>();
         insertValuesIntoMap();
+        checkIfValuesAreValid();
     }
 
     public Map<Character, Integer> getParametersMap() {
@@ -44,7 +44,7 @@ public class ParameterValidator {
     }
 
     private boolean isTheValueValid(String value) {
-        if (!value.matches("^[A-Z]\\d+$")) {
+        if (!value.matches("^[SCPA]\\d+$")) {
             throw new IllegalArgumentException("O parâmetro '"
                     + value
                     + "' é um valor inválido.");
@@ -59,4 +59,12 @@ public class ParameterValidator {
     private char getIdentifierFromString(String arg) {
         return arg.charAt(0);
     }
+
+    private void checkIfValuesAreValid() {
+        if (!(this.parametersMap.get('P') > this.parametersMap.get('A')
+                && this.parametersMap.get('A') > this.parametersMap.get('C'))) {
+            throw new IllegalArgumentException("Os valores informados devem seguir a seguinte regra: 'P >> A >> C'");
+        }
+    }
 }
+
