@@ -3,6 +3,7 @@ package org.unesp.entities;
 import org.unesp.services.VehicleService;
 import org.unesp.util.ApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Vehicle implements Runnable {
@@ -15,6 +16,7 @@ public class Vehicle implements Runnable {
     public Vehicle(int id, int maxSpace) {
         this.maxSpace = maxSpace;
         this.usedSpace = 0;
+        listOfDeliveries = new ArrayList<>();
         setId(id);
     }
 
@@ -73,7 +75,7 @@ public class Vehicle implements Runnable {
         return "Vehicle{" +
                 "id='" + id + '\'' +
                 ", maxSpace=" + maxSpace +
-                ", currentRedistributor=" + currentRedistributor +
+                ", usedSpace=" + usedSpace +
                 '}';
     }
 
