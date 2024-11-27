@@ -44,6 +44,19 @@ public class CircularList {
         return current.getNext().getRedistributor();
     }
 
+    public int size() {
+        if (head == null) {
+            return 0;
+        }
+        int count = 0;
+        Node current = head;
+        do {
+            count++;
+            current = current.getNext();
+        } while (current != head);
+        return count;
+    }
+
     public void display() {
         Node current = head;
         if (head == null) {
