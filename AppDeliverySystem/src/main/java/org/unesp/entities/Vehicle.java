@@ -3,16 +3,14 @@ package org.unesp.entities;
 import java.util.List;
 
 public class Vehicle implements Runnable {
-    private static int counter = 0;
     private String id;
     private Integer maxSpace;
     private List<Delivery> listOfDeliveries;
+    private Redistributor currentRedistributor;
 
-    public Vehicle(Integer maxSpace, List<Delivery> listOfDeliveries) {
+    public Vehicle(int id, int maxSpace) {
         this.maxSpace = maxSpace;
-        this.listOfDeliveries = listOfDeliveries;
-        setId(counter);
-        counter++;
+        setId(id);
     }
 
     public String getId() {
@@ -37,6 +35,14 @@ public class Vehicle implements Runnable {
 
     public void setListOfDeliveries(List<Delivery> listOfDeliveries) {
         this.listOfDeliveries = listOfDeliveries;
+    }
+
+    public Redistributor getCurrentRedistributor() {
+        return currentRedistributor;
+    }
+
+    public void setCurrentRedistributor(Redistributor currentRedistributor) {
+        this.currentRedistributor = currentRedistributor;
     }
 
     @Override
