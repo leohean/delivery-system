@@ -62,6 +62,12 @@ public class Vehicle implements Runnable {
         this.usedSpace += 1;
     }
 
+    public void decreaseUsedSpaceByOne() {
+        if (this.usedSpace != 0) {
+            this.usedSpace -= 1;
+        }
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -76,9 +82,5 @@ public class Vehicle implements Runnable {
         System.out.printf(" + Thread Veículo #%s inicializado.\n", this.getId());
         VehicleService vehicleService = new VehicleService();
         vehicleService.initializeVehicleToRandomRedistributor(this);
-
-        while (ApplicationContext.getRemainingDelivery() > 0) {
-
-        }
     }
 }

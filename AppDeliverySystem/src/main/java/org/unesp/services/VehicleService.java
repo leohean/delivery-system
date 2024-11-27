@@ -7,6 +7,7 @@ import org.unesp.monitors.MessageMonitor;
 import org.unesp.util.ApplicationContext;
 import org.unesp.util.RandomGenerator;
 
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class VehicleService {
@@ -21,14 +22,17 @@ public class VehicleService {
     }
 
     public void associateVehicleToRedistributor(Vehicle vehicle, Redistributor redistributor) {
-        if (redistributor.getCurrentVehicle() == null && (vehicleHasDeliveriesToUnload(vehicle) || !redistributor.getListOfDeliveries().isEmpty())) {
-            vehicle.setCurrentRedistributor(redistributor);
-            redistributor.setCurrentVehicle(vehicle);
-            System.out.printf("Veículo #%s começou a carregar no ponto de redistribuição #%s.\n", vehicle.getId(), redistributor.getId());
-        } else {
-            System.out.printf("Veículo #%s não possui encomendas para descarregar ou ponto #%s não possui encomendas. " +
-                    "Se dirigindo para o próximo ponto.\n", vehicle.getId(), redistributor.getId());
-            goToNextRedistributor(vehicle);
+        while (ApplicationContext.getRemainingDelivery() > 0) {
+            if (redistributor.getCurrentVehicle() == null && (vehicleHasDeliveriesToUnload(vehicle) || !redistributor.getListOfDeliveries().isEmpty())) {
+                vehicle.setCurrentRedistributor(redistributor);
+                redistributor.setCurrentVehicle(vehicle);
+                System.out.printf("Veículo #%s começou a carregar no ponto de redistribuição #%s.\n", vehicle.getId(), redistributor.getId());
+                loadDeliveries(vehicle);
+            } else {
+                System.out.printf("Veículo #%s não possui encomendas para descarregar ou ponto #%s não possui encomendas. " +
+                        "Se dirigindo para o próximo ponto.\n", vehicle.getId(), redistributor.getId());
+                goToNextRedistributor(vehicle);
+            }
         }
     }
 
@@ -73,13 +77,20 @@ public class VehicleService {
             try {
                 currentRedistributor.getRedistributorsSemaphore().acquire();
                 for (Delivery delivery : currentRedistributor.getListOfDeliveries()) {
-                    delivery.getDeliverySemaphore().acquire();
-                    vehicle.getListOfDeliveries().add(delivery);
-                    ApplicationContext.decreaseRemainingDelivery();
-                    vehicle.increaseUsedSpaceByOne();
-                    messageMonitor.showInformation("-> Encomenda " + delivery.getId() +
-                            " foi carregada no veículo " + vehicle.getId() + ".\n", delivery);
-                    delivery.getDeliverySemaphore().release();
+                    if (!currentRedistributor.getListOfDeliveries().isEmpty()) {
+                        delivery.getDeliverySemaphore().acquire();
+                        vehicle.getListOfDeliveries().add(delivery);
+                        currentRedistributor.getListOfDeliveries().remove(delivery);
+                        vehicle.increaseUsedSpaceByOne();
+                        int loadTime = RandomGenerator.generateRandomLoadTime();
+                        Thread.sleep(loadTime);
+                        messageMonitor.showInformation("=> Encomenda " + delivery.getId()
+                                + " foi carregada no veículo " + vehicle.getId()
+                                + " (Tempo para carregar: " + String.format("%.2f", (double) loadTime / 1000)
+                                + " segundos.\n", delivery);
+                        delivery.getDeliverySemaphore().release();
+                    }
+                    goToNextRedistributor(vehicle);
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -88,8 +99,42 @@ public class VehicleService {
             }
         }
     }
-    
+
     private void unloadDeliveries(Vehicle vehicle) {
         System.out.printf("-> #%s descarregando encomendas no ponto de redistribuição #%s", vehicle.getId(), vehicle.getCurrentRedistributor().getId());
+        var currentRedistributor = vehicle.getCurrentRedistributor();
+        try {
+            if (vehicleHasDeliveriesToUnload(vehicle)) {
+                currentRedistributor.getRedistributorsSemaphore().acquire();
+                for (Delivery delivery : filterDeliveriesToLoad(vehicle)) {
+                    delivery.getDeliverySemaphore().acquire();
+                    vehicle.getListOfDeliveries().remove(delivery);
+                    vehicle.decreaseUsedSpaceByOne();
+                    ApplicationContext.decreaseRemainingDelivery();
+
+                    int unloadTime = RandomGenerator.generateRandomLoadTime();
+                    Thread.sleep(unloadTime);
+                    delivery.getDeliverySemaphore().release();
+                    messageMonitor.showInformation("=> Encomenda " + delivery.getId()
+                            + " foi descarregada pelo veículo " + vehicle.getId()
+                            + " no centro de redistribuição " + currentRedistributor.getId()
+                            + " (Tempo para descarregar: " + String.format("%.2f", (double) unloadTime / 1000)
+                            + " segundos.\n", delivery);
+                    messageMonitor.showInformation("==> Entrega de #"
+                            + delivery.getId() + " finalizada com sucesso.\n", delivery);
+                }
+            }
+            loadDeliveries(vehicle);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            currentRedistributor.getRedistributorsSemaphore().release();
+        }
+    }
+
+    private List<Delivery> filterDeliveriesToLoad(Vehicle vehicle) {
+        var currentRedistributor = vehicle.getCurrentRedistributor();
+        return vehicle.getListOfDeliveries().stream()
+                .filter(d -> d.getRedistributorDestination().equals(currentRedistributor)).toList();
     }
 }

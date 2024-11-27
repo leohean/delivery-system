@@ -1,5 +1,7 @@
 package org.unesp.entities;
 
+import org.unesp.monitors.MessageMonitor;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -96,6 +98,12 @@ public class Delivery implements Runnable {
 
     @Override
     public void run() {
+        MessageMonitor messageMonitor = new MessageMonitor();
+        messageMonitor.showInformation(" + Thread Pacote #"
+                + this.getId()
+                + " inicializado no ponto de redistribuição #"
+                + this.getRedistributorDestination().getId()
+                + "\n", this);
         System.out.printf(" + Thread Pacote #%s inicializado no ponto de redistribuição #%s\n", this.getId(), this.getRedistributorOrigin().getId());
     }
 }
