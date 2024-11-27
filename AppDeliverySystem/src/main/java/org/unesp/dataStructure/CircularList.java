@@ -5,8 +5,8 @@ import org.unesp.entities.Redistributor;
 public class CircularList {
 
     //Declaring head and tail pointer as null.
-    public Node head = null;
-    public Node tail = null;
+    private Node head = null;
+    private Node tail = null;
 
     public void add(Redistributor redistributor) {
 
@@ -42,6 +42,22 @@ public class CircularList {
             current = current.getNext();
         } while (!current.getRedistributor().equals(redistributor));
         return current.getNext().getRedistributor();
+    }
+
+    public Node getHead() {
+        return head;
+    }
+
+    public void setHead(Node head) {
+        this.head = head;
+    }
+
+    public Node getTail() {
+        return tail;
+    }
+
+    public void setTail(Node tail) {
+        this.tail = tail;
     }
 
     public int size() {

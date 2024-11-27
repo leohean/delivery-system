@@ -2,6 +2,7 @@ package org.unesp.util;
 
 import org.unesp.dataStructure.CircularList;
 import org.unesp.entities.Redistributor;
+import org.unesp.entities.Vehicle;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,7 +15,7 @@ public class RandomGenerator {
         }
 
         int randomPosition = ThreadLocalRandom.current().nextInt(listSize);
-        Redistributor redistributor = circularList.head.getRedistributor();
+        Redistributor redistributor = circularList.getHead().getRedistributor();
 
         for (int i = 0; i < randomPosition; i++) {
             redistributor = circularList.getNextRedistributor(redistributor);
@@ -22,5 +23,7 @@ public class RandomGenerator {
         return redistributor;
     }
 
-    public static void 
+    public static void associateVehicleToRandomRedistributor(Vehicle vehicle, CircularList circularList) {
+
+    }
 }
