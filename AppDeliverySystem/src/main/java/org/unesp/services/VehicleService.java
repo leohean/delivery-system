@@ -25,7 +25,7 @@ public class VehicleService {
                     System.out.printf("Veículo #%s começou a carregar no ponto de redistribuição #%s.\n", vehicle.getId(), redistributor.getId());
                 } else {
                     System.out.printf("Veículo #%s não possui encomendas para descarregar ou ponto #%s não possui encomendas. " +
-                            "Se dirigindo para o próximo ponto.\n", redistributor.getId(), vehicle.getId());
+                            "Se dirigindo para o próximo ponto.\n", vehicle.getId(), redistributor.getId());
                     goToNextRedistributor(vehicle);
                 }
             }
@@ -62,5 +62,13 @@ public class VehicleService {
         Thread.sleep(travelTime);
         System.out.printf("Veículo #%s chegou ao próximo ponto de redistribuição. (Tempo de viagem: %.2f segundos) - Aguardando Liberação\n",
                 vehicle.getId(), (double) travelTime / 1000);
+    }
+
+    private void loadDeliveries(Vehicle vehicle) {
+        System.out.printf("-> #%s carregando encomendas no ponto de redistribuição #%s", vehicle.getId(), vehicle.getCurrentRedistributor().getId());
+    }
+
+    private void unloadDeliveries(Vehicle vehicle) {
+        System.out.printf("-> #%s descarregando encomendas no ponto de redistribuição #%s", vehicle.getId(), vehicle.getCurrentRedistributor().getId());
     }
 }

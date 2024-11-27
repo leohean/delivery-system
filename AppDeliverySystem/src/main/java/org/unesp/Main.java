@@ -42,6 +42,11 @@ public class Main {
             redistributorList.add(redistributor);
         }
 
+        // Inicializando threads de Redistributor
+        for (Redistributor redistributor : redistributorList) {
+            executorService.submit(redistributor);
+        }
+
         // Gerando pacotes
         for (int i = 0; i < argsMap.get('P'); i++) {
             Redistributor origin = RandomGenerator.getRandomRedistributor();
@@ -58,11 +63,6 @@ public class Main {
         for (int i = 0; i < argsMap.get('C'); i++) {
             Vehicle vehicle = new Vehicle(i, VEHICLE_LOAD_SPACE);
             vehicleList.add(vehicle);
-        }
-
-        // Inicializando threads de Redistributor
-        for (Redistributor redistributor : redistributorList) {
-            executorService.submit(redistributor);
         }
 
         // Inicializando threads de Delivery

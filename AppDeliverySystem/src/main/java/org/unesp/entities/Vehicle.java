@@ -58,6 +58,7 @@ public class Vehicle implements Runnable {
 
     @Override
     public void run() {
+        System.out.printf(" + Thread Veículo #%s inicializado.\n", this.getId());
         VehicleService vehicleService = new VehicleService();
         vehicleService.initializeVehicleToRandomRedistributor(this);
     }

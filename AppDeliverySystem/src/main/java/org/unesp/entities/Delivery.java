@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Delivery implements Runnable {
     private static List<File> listFiles = Collections.synchronizedList(new ArrayList<>());
@@ -15,12 +16,14 @@ public class Delivery implements Runnable {
     private LocalDateTime originTime;
     private LocalDateTime finishTime;
     private Vehicle associatedVehicle;
+    private final Semaphore deliverySemaphore;
 
     public Delivery(int id, Redistributor redistributorOrigin,
                     Redistributor redistributorDestination, LocalDateTime originTime) {
         this.redistributorOrigin = redistributorOrigin;
         this.redistributorDestination = redistributorDestination;
         this.originTime = originTime;
+        this.deliverySemaphore = new Semaphore(1);
         setId(id);
     }
 
@@ -76,6 +79,10 @@ public class Delivery implements Runnable {
         return listFiles;
     }
 
+    public Semaphore getDeliverySemaphore() {
+        return deliverySemaphore;
+    }
+
     @Override
     public String toString() {
         return "Delivery{" +
@@ -89,6 +96,6 @@ public class Delivery implements Runnable {
 
     @Override
     public void run() {
-        System.out.printf("Pacote #%s iniciado\n", this.getId());
+        System.out.printf(" + Thread Pacote #%s inicializado no ponto de redistribuição #%s\n", this.getId(), this.getRedistributorOrigin().getId());
     }
 }

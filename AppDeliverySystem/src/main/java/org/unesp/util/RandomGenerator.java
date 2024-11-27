@@ -17,4 +17,8 @@ public class RandomGenerator {
     public static int generateRandomTravelTime() {
         return ThreadLocalRandom.current().nextInt(3000, 15000);
     }
+
+    public static int generateRandomLoadTime() {
+        return ThreadLocalRandom.current().nextInt(1000, 5000);
+    }
 }

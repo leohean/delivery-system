@@ -62,7 +62,7 @@ public class Redistributor implements Runnable{
     public void run() {
         try {
             Thread.sleep(500);
-            System.out.printf("Ponto de redistribuição %s inicializado.\n", this.id);
+            System.out.printf(" + Thread Ponto de redistribuição %s inicializado.\n", this.id);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
