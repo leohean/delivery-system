@@ -1,26 +1,27 @@
 package org.unesp.entities;
 
+import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Delivery implements Runnable {
-    private static int counter = 0;
+    private static List<File> listFiles = Collections.synchronizedList(new ArrayList<>());
+
     private String id;
     private Redistributor redistributorOrigin;
     private Redistributor redistributorDestination;
     private LocalDate originTime;
-    private LocalDate loadTime;
     private LocalDate finishTime;
     private Vehicle associatedVehicle;
 
-    public Delivery(Redistributor redistributorOrigin, Redistributor redistributorDestination, LocalDate originTime, LocalDate loadTime, LocalDate finishTime, Vehicle associatedVehicle) {
+    public Delivery(int id, Redistributor redistributorOrigin,
+                    Redistributor redistributorDestination, LocalDate originTime) {
         this.redistributorOrigin = redistributorOrigin;
         this.redistributorDestination = redistributorDestination;
         this.originTime = originTime;
-        this.loadTime = loadTime;
-        this.finishTime = finishTime;
-        this.associatedVehicle = associatedVehicle;
-        setId(counter);
-        counter++;
+        setId(id);
     }
 
     public String getId() {
@@ -28,7 +29,7 @@ public class Delivery implements Runnable {
     }
 
     public void setId(Integer id) {
-        this.id = "D" + counter;
+        this.id = "D" + id;
     }
 
     public Redistributor getRedistributorOrigin() {
@@ -55,14 +56,6 @@ public class Delivery implements Runnable {
         this.originTime = originTime;
     }
 
-    public LocalDate getLoadTime() {
-        return loadTime;
-    }
-
-    public void setLoadTime(LocalDate loadTime) {
-        this.loadTime = loadTime;
-    }
-
     public LocalDate getFinishTime() {
         return finishTime;
     }
@@ -79,13 +72,18 @@ public class Delivery implements Runnable {
         this.associatedVehicle = associatedVehicle;
     }
 
+    public static List<File> getListFiles() {
+        return listFiles;
+    }
+
     @Override
     public String toString() {
         return "Delivery{" +
                 "id='" + id + '\'' +
                 ", redistributorOrigin=" + redistributorOrigin +
                 ", redistributorDestination=" + redistributorDestination +
-                ", associatedVehicle=" + associatedVehicle +
+                ", originTime=" + originTime +
+                ", finishTime=" + finishTime +
                 '}';
     }
 

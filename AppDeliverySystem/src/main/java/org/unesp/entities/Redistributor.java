@@ -3,16 +3,12 @@ package org.unesp.entities;
 import java.util.List;
 
 public class Redistributor implements Runnable{
-    private static int counter = 0;
     private String id;
     private List<Delivery> listOfDeliveries;
     private Vehicle currentVehicle;
 
-    public Redistributor(List<Delivery> listOfDeliveries, Vehicle currentVehicle) {
-        this.listOfDeliveries = listOfDeliveries;
-        this.currentVehicle = currentVehicle;
-        setId(counter);
-        counter++;
+    public Redistributor(int id) {
+        setId(id);
     }
 
     public String getId() {
@@ -49,5 +45,12 @@ public class Redistributor implements Runnable{
 
     @Override
     public void run() {
+        try {
+            Thread.sleep(500);
+            System.out.printf("Ponto de redistribuição %s inicializado.\n", this.id);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
