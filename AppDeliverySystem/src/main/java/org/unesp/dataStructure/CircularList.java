@@ -4,7 +4,6 @@ import org.unesp.entities.Redistributor;
 
 public class CircularList {
 
-    //Declaring head and tail pointer as null.
     public Node head = null;
     public Node tail = null;
 
@@ -17,11 +16,8 @@ public class CircularList {
             tail = newNode;
             newNode.setNext(head);
         } else {
-            //tail will point to new node.
             tail.setNext(newNode);
-            //New node will become new tail.
             tail = newNode;
-            //Since, it is circular linked list tail will point to head.
             tail.setNext(head);
         }
     }
