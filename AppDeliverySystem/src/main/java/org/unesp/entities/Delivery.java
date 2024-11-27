@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Delivery implements Runnable {
-    private static List<File> listFiles = Collections.synchronizedList(new ArrayList<>());
+    //private static List<File> listFiles = Collections.synchronizedList(new ArrayList<>());
 
     private String id;
     private Redistributor redistributorOrigin;
@@ -19,6 +19,7 @@ public class Delivery implements Runnable {
     private LocalDateTime finishTime;
     private Vehicle associatedVehicle;
     private final Semaphore deliverySemaphore;
+    private File file;
 
     public Delivery(int id, Redistributor redistributorOrigin,
                     Redistributor redistributorDestination, LocalDateTime originTime) {
@@ -27,6 +28,7 @@ public class Delivery implements Runnable {
         this.originTime = originTime;
         this.deliverySemaphore = new Semaphore(1);
         setId(id);
+        this.file = new File(getId()+".csv");
     }
 
     public String getId() {
@@ -77,9 +79,13 @@ public class Delivery implements Runnable {
         this.associatedVehicle = associatedVehicle;
     }
 
-    public static List<File> getListFiles() {
-        return listFiles;
-    }
+    //public static List<File> getListFiles() {
+        //return listFiles;
+    //}
+
+    public File getFile() {return file;}
+
+    public void setFile(File file) {this.file = file;}
 
     public Semaphore getDeliverySemaphore() {
         return deliverySemaphore;

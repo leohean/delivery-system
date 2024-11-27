@@ -20,30 +20,21 @@ public class MessageMonitor {
     }
 
     protected void writeMessageOnFile(String message, Delivery delivery) {
-        File writeFile = null;
-        for(File file : Delivery.getListFiles()){
-            if (file.getName().equals(delivery.getId())) {
-                writeFile = file;
-                break;
-            }
-        }
+        File writeFile = delivery.getFile();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH'H'mm'M'ss'S'");
         if (writeFile != null) {
-            try (FileWriter escritor = new FileWriter(writeFile)) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHHMMSS");
-                String hour = LocalTime.now().format(formatter);
+            try (FileWriter escritor = new FileWriter(writeFile, true)) {
+                String horario = LocalTime.now().format(formatter);
 
-                escritor.append(hour).append(message);
+                escritor.append(horario).append(" - ").append(message);
                 escritor.append("\n");
 
             } catch (IOException e) {
-                System.err.println("Erro ao escrever no arquivo: " + e.getMessage());
+                System.out.println("Erro ao escrever no arquivo: " + e.getMessage());
             }
         } else {
             System.out.println("Arquivo " + delivery.getId() + " não encontrado na lista.");
         }
-
-        // 15H30M23S - Pacote P65 foi descarregado pelo veículo V3 no centro de redistribuição C4
-        // 14H28M49S - Veículo v3 saiu do centro de redistribuição C3 em direção ao centro de redistribuição C4 com o pacote P65
     }
 }
