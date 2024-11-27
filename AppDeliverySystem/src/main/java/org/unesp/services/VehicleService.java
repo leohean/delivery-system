@@ -1,47 +1,66 @@
 package org.unesp.services;
 
-import org.unesp.dataStructure.CircularList;
 import org.unesp.entities.Redistributor;
 import org.unesp.entities.Vehicle;
 import org.unesp.util.ApplicationContext;
 import org.unesp.util.RandomGenerator;
 
+import java.util.concurrent.Semaphore;
+
 public class VehicleService {
-
     public void initializeVehicleToRandomRedistributor(Vehicle vehicle) {
-        Redistributor randomRedistributor = RandomGenerator.getRandomRedistributor(ApplicationContext.getCircularList());
-
-        if (randomRedistributor != null && randomRedistributor.getCurrentVehicle() == null) {
+        Redistributor randomRedistributor = RandomGenerator.getRandomRedistributor();
+        if (randomRedistributor.getCurrentVehicle() == null) {
             associateVehicleToRedistributor(vehicle, randomRedistributor);
         }
     }
 
     public void associateVehicleToRedistributor(Vehicle vehicle, Redistributor redistributor) {
-        while (true) {
-            if (redistributor.getCurrentVehicle() == null) {
-                vehicle.setCurrentRedistributor(redistributor);
-                redistributor.setCurrentVehicle(vehicle);
-                vehicle.setNextRedistributor(ApplicationContext.getCircularList().getNextRedistributor(redistributor));
-                System.out.printf("Veículo #%s começou a carregar no ponto de redistribuição #%s.\n", vehicle.getId(), redistributor.getId());
-            } else {
-                goToNextRedistributor(vehicle, redistributor);
+        try {
+            redistributor.getRedistributorsSemaphore().acquire();
+            while (ApplicationContext.getRemainingDelivery() > 0) { // Substituir pelo número de pacotes que faltam ser entregues
+                if (redistributor.getCurrentVehicle() == null && (vehicleHasDeliveriesToUnload(vehicle) || !redistributor.getListOfDeliveries().isEmpty())) {
+                    vehicle.setCurrentRedistributor(redistributor);
+                    redistributor.setCurrentVehicle(vehicle);
+                    System.out.printf("Veículo #%s começou a carregar no ponto de redistribuição #%s.\n", vehicle.getId(), redistributor.getId());
+                } else {
+                    System.out.printf("Veículo #%s não possui encomendas para descarregar ou ponto #%s não possui encomendas. " +
+                            "Se dirigindo para o próximo ponto.\n", redistributor.getId(), vehicle.getId());
+                    goToNextRedistributor(vehicle);
+                }
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            redistributor.getRedistributorsSemaphore().release();
         }
     }
 
-    public void goToNextRedistributor(Vehicle vehicle, Redistributor redistributor) {
-        System.out.printf("Ponto de redistribuição #%s está ocupado. Veículo #%s está se dirigindo para o próximo ponto.\n", redistributor.getId(), vehicle.getId());
+    public void goToNextRedistributor(Vehicle vehicle) throws InterruptedException {
+        Redistributor nextRedistributor = ApplicationContext.getCircularList().getNextRedistributor(vehicle.getCurrentRedistributor());
+        vehicle.getCurrentRedistributor().setCurrentVehicle(null);
         vehicle.setCurrentRedistributor(null);
-        vehicle.setNextRedistributor(ApplicationContext.getCircularList().getNextRedistributor(redistributor));
+        vehicle.getCurrentRedistributor().getRedistributorsSemaphore().release();
 
-        int travelTime = RandomGenerator.generateRandomTravelTime();
+        simulateTravel(vehicle);
 
-        try {
-            Thread.sleep(travelTime);
-            System.out.printf("Veículo #%s chegou ao ponto de redistribuição #%s. (Tempo de viagem: %.2f segundos)\n", vehicle.getId(), redistributor.getId(), (double) travelTime / 1000);
-            associateVehicleToRedistributor(vehicle, redistributor);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        associateVehicleToRedistributor(vehicle, nextRedistributor);
+    }
+
+    private boolean vehicleHasDeliveriesToUnload(Vehicle vehicle) {
+        if (vehicle.getCurrentRedistributor() == null) {
+            return false;
         }
+
+        Redistributor currentRedistributorPoint = vehicle.getCurrentRedistributor();
+        return vehicle.getListOfDeliveries().stream().anyMatch(d ->
+                d.getRedistributorDestination().equals(currentRedistributorPoint));
+    }
+
+    private void simulateTravel(Vehicle vehicle) throws InterruptedException {
+        int travelTime = RandomGenerator.generateRandomTravelTime();
+        Thread.sleep(travelTime);
+        System.out.printf("Veículo #%s chegou ao próximo ponto de redistribuição. (Tempo de viagem: %.2f segundos) - Aguardando Liberação\n",
+                vehicle.getId(), (double) travelTime / 1000);
     }
 }

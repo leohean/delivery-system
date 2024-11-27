@@ -7,20 +7,11 @@ import org.unesp.entities.Vehicle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomGenerator {
-    public static Redistributor getRandomRedistributor(CircularList circularList) {
-        int listSize = circularList.size();
+    public static Redistributor getRandomRedistributor() {
+        int listSize = ApplicationContext.getCircularList().size();
 
-        if (listSize == 0) {
-            return null;
-        }
-
-        int randomPosition = ThreadLocalRandom.current().nextInt(listSize);
-        Redistributor redistributor = circularList.getHead().getRedistributor();
-
-        for (int i = 0; i < randomPosition; i++) {
-            redistributor = circularList.getNextRedistributor(redistributor);
-        }
-        return redistributor;
+        int randomPosition = ThreadLocalRandom.current().nextInt(1, listSize);
+        return ApplicationContext.getCircularList().getRedistributorAtPosition(randomPosition);
     }
 
     public static int generateRandomTravelTime() {

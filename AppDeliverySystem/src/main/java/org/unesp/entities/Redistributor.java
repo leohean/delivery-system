@@ -1,14 +1,25 @@
 package org.unesp.entities;
 
+import org.unesp.util.ApplicationContext;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Redistributor implements Runnable{
     private String id;
     private List<Delivery> listOfDeliveries;
     private Vehicle currentVehicle;
+    private final Semaphore redistributorsSemaphore;
 
     public Redistributor(int id) {
         setId(id);
+        listOfDeliveries = Collections.synchronizedList(new ArrayList<>());
+
+        redistributorsSemaphore = new Semaphore(1);
     }
 
     public String getId() {
@@ -33,6 +44,10 @@ public class Redistributor implements Runnable{
 
     public void setCurrentVehicle(Vehicle currentVehicle) {
         this.currentVehicle = currentVehicle;
+    }
+
+    public Semaphore getRedistributorsSemaphore() {
+        return redistributorsSemaphore;
     }
 
     @Override

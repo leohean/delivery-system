@@ -1,7 +1,7 @@
 package org.unesp.entities;
 
 import java.io.File;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,12 +12,12 @@ public class Delivery implements Runnable {
     private String id;
     private Redistributor redistributorOrigin;
     private Redistributor redistributorDestination;
-    private LocalDate originTime;
-    private LocalDate finishTime;
+    private LocalDateTime originTime;
+    private LocalDateTime finishTime;
     private Vehicle associatedVehicle;
 
     public Delivery(int id, Redistributor redistributorOrigin,
-                    Redistributor redistributorDestination, LocalDate originTime) {
+                    Redistributor redistributorDestination, LocalDateTime originTime) {
         this.redistributorOrigin = redistributorOrigin;
         this.redistributorDestination = redistributorDestination;
         this.originTime = originTime;
@@ -48,19 +48,19 @@ public class Delivery implements Runnable {
         this.redistributorDestination = redistributorDestination;
     }
 
-    public LocalDate getOriginTime() {
+    public LocalDateTime getOriginTime() {
         return originTime;
     }
 
-    public void setOriginTime(LocalDate originTime) {
+    public void setOriginTime(LocalDateTime originTime) {
         this.originTime = originTime;
     }
 
-    public LocalDate getFinishTime() {
+    public LocalDateTime getFinishTime() {
         return finishTime;
     }
 
-    public void setFinishTime(LocalDate finishTime) {
+    public void setFinishTime(LocalDateTime finishTime) {
         this.finishTime = finishTime;
     }
 
@@ -89,6 +89,6 @@ public class Delivery implements Runnable {
 
     @Override
     public void run() {
-
+        System.out.printf("Pacote #%s iniciado\n", this.getId());
     }
 }

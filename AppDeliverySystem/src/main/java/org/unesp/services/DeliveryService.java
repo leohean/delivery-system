@@ -16,4 +16,7 @@ public class DeliveryService {
         messageMonitor.showInformation(message, delivery);
     }
 
+    public void initializeDeliveryToRandomRedistributor(Delivery delivery) {
+
+    }
 }
