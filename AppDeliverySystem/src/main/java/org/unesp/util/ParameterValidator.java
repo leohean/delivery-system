@@ -17,6 +17,7 @@ public class ParameterValidator {
         this.args = args;
         parametersMap = new HashMap<>();
         insertValuesIntoMap();
+        checkIfThereIsAParameterZero();
         checkIfValuesAreValid();
     }
 
@@ -64,6 +65,13 @@ public class ParameterValidator {
         if (!(this.parametersMap.get('P') > this.parametersMap.get('A')
                 && this.parametersMap.get('A') > this.parametersMap.get('C'))) {
             throw new IllegalArgumentException("Os valores informados devem seguir a seguinte regra: 'P >> A >> C'");
+        }
+    }
+
+    private void checkIfThereIsAParameterZero() {
+        if (this.parametersMap.get('P') == 0 || this.parametersMap.get('A') == 0
+                || this.parametersMap.get('A') == 0 || this.parametersMap.get('C') ==0 ) {
+            throw new IllegalArgumentException("Nenhum dos parâmetros de entrada pode ser zero");
         }
     }
 }
