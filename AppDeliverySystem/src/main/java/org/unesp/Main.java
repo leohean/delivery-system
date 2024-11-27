@@ -4,6 +4,7 @@ import org.unesp.dataStructure.CircularList;
 import org.unesp.entities.Delivery;
 import org.unesp.entities.Redistributor;
 import org.unesp.entities.Vehicle;
+import org.unesp.monitors.MessageMonitor;
 import org.unesp.services.VehicleService;
 import org.unesp.util.ApplicationContext;
 import org.unesp.util.ParameterValidator;
@@ -18,6 +19,8 @@ import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
+        MessageMonitor messageMonitor = new MessageMonitor();
+
         var parameterValidator = new ParameterValidator(args);
         var vehicleService = new VehicleService();
 
@@ -74,6 +77,9 @@ public class Main {
         for (Vehicle vehicle : vehicleList) {
             executorService.submit(vehicle);
         }
+
+        messageMonitor.showInformation("Teste1", deliveryList.get(0));
+        messageMonitor.showInformation("Teste2", deliveryList.get(0));
 
     }
 }
