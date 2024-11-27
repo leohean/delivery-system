@@ -21,4 +21,8 @@ public class ApplicationContext {
     public static void setRemainingDelivery(int remainingDelivery) {
         ApplicationContext.remainingDelivery = remainingDelivery;
     }
+
+    public static void decreaseRemainingDelivery() {
+        remainingDelivery -= 1;
+    }
 }

@@ -1,17 +1,20 @@
 package org.unesp.entities;
 
 import org.unesp.services.VehicleService;
+import org.unesp.util.ApplicationContext;
 
 import java.util.List;
 
 public class Vehicle implements Runnable {
     private String id;
     private Integer maxSpace;
+    private Integer usedSpace;
     private List<Delivery> listOfDeliveries;
     private Redistributor currentRedistributor;
 
     public Vehicle(int id, int maxSpace) {
         this.maxSpace = maxSpace;
+        this.usedSpace = 0;
         setId(id);
     }
 
@@ -47,6 +50,18 @@ public class Vehicle implements Runnable {
         this.currentRedistributor = currentRedistributor;
     }
 
+    public Integer getUsedSpace() {
+        return usedSpace;
+    }
+
+    public void setUsedSpace(Integer usedSpace) {
+        this.usedSpace = usedSpace;
+    }
+
+    public void increaseUsedSpaceByOne() {
+        this.usedSpace += 1;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -61,5 +76,9 @@ public class Vehicle implements Runnable {
         System.out.printf(" + Thread Veículo #%s inicializado.\n", this.getId());
         VehicleService vehicleService = new VehicleService();
         vehicleService.initializeVehicleToRandomRedistributor(this);
+
+        while (ApplicationContext.getRemainingDelivery() > 0) {
+
+        }
     }
 }
