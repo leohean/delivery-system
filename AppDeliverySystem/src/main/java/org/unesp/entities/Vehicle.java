@@ -50,11 +50,12 @@ public class Vehicle implements Runnable {
         return "Vehicle{" +
                 "id='" + id + '\'' +
                 ", maxSpace=" + maxSpace +
+                ", currentRedistributor=" + currentRedistributor +
                 '}';
     }
 
     @Override
     public void run(){
-        System.out.printf("=> Veículo #%s Indo fazer entregas.\n", this.id);
+        System.out.printf("=> Veículo #%s Indo fazer entregas.\n", this.toString());
     }
 }

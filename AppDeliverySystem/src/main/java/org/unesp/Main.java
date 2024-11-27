@@ -1,19 +1,48 @@
 package org.unesp;
 
-import org.unesp.builders.VehicleBuilder;
 import org.unesp.dataStructure.CircularList;
-import org.unesp.entities.Delivery;
 import org.unesp.entities.Redistributor;
 import org.unesp.entities.Vehicle;
 import org.unesp.util.ParameterValidator;
+import org.unesp.util.RandomGenerator;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
         var parameterValidator = new ParameterValidator(args);
         Map<Character, Integer> argsMap = parameterValidator.getParametersMap();
 
+        final int VEHICLE_LOAD_SPACE = argsMap.get('A');
+
+        CircularList circularList = new CircularList();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(argsMap.get('S') + argsMap.get('C') + argsMap.get('P'));
+
+        // Gerando pontos de redistribuição e gerando lista circular
+        for (int i = 0; i < argsMap.get('S'); i++) {
+            Redistributor redistributor = new Redistributor(i);
+            circularList.add(redistributor);
+            executorService.submit(redistributor);
+        }
+
+        circularList.display();
+
+        // Gerando veículos
+        for (int i = 0; i < argsMap.get('C'); i++) {
+            Vehicle vehicle = new Vehicle(i, VEHICLE_LOAD_SPACE);
+            vehicle.setCurrentRedistributor(RandomGenerator.getRandomRedistributor(circularList));
+            executorService.submit(vehicle);
+        }
+
+
+
+
+
+
+        /*
         VehicleBuilder vehicleBuilder = new VehicleBuilder(5);
 
         CircularList cl = new CircularList();
@@ -33,5 +62,6 @@ public class Main {
         cl.display();
 
         System.out.println(cl.getNextRedistributor(r3));
+        */
     }
 }
