@@ -23,7 +23,7 @@ public class RandomGenerator {
         return redistributor;
     }
 
-    public static void associateVehicleToRandomRedistributor(Vehicle vehicle, CircularList circularList) {
-
+    public static int generateRandomTravelTime() {
+        return ThreadLocalRandom.current().nextInt(3000, 15000);
     }
 }

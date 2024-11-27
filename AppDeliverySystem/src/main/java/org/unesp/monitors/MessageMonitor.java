@@ -1,6 +1,5 @@
 package org.unesp.monitors;
 
-import org.unesp.builders.DeliveryBuilder;
 import org.unesp.entities.Delivery;
 
 import java.io.File;

@@ -1,5 +1,7 @@
 package org.unesp.entities;
 
+import org.unesp.services.VehicleService;
+
 import java.util.List;
 
 public class Vehicle implements Runnable {
@@ -7,6 +9,7 @@ public class Vehicle implements Runnable {
     private Integer maxSpace;
     private List<Delivery> listOfDeliveries;
     private Redistributor currentRedistributor;
+    private Redistributor nextRedistributor;
 
     public Vehicle(int id, int maxSpace) {
         this.maxSpace = maxSpace;
@@ -45,6 +48,14 @@ public class Vehicle implements Runnable {
         this.currentRedistributor = currentRedistributor;
     }
 
+    public Redistributor getNextRedistributor() {
+        return nextRedistributor;
+    }
+
+    public void setNextRedistributor(Redistributor nextRedistributor) {
+        this.nextRedistributor = nextRedistributor;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -56,6 +67,7 @@ public class Vehicle implements Runnable {
 
     @Override
     public void run(){
-        System.out.printf("=> Veículo #%s Indo fazer entregas.\n", this.toString());
+        VehicleService vehicleService = new VehicleService();
+        vehicleService.initializeVehicleToRandomRedistributor(this);
     }
 }
