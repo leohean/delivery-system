@@ -67,10 +67,9 @@ public class VehicleService {
     }
 
     private void loadDeliveries(Vehicle vehicle) {
-        if (vehicle.getCurrentRedistributor() != null
-                && vehicle.getUsedSpace() < vehicle.getMaxSpace()
+        if (vehicle.getUsedSpace() < vehicle.getMaxSpace()
                 && redistributorService.getRemainingDeliveriesNumber(vehicle.getCurrentRedistributor()) != 0) {
-            System.out.printf("-> #%s carregando encomendas no ponto de redistribuição #%s",
+            System.out.printf("-> #%s carregando encomendas no ponto de redistribuição #%s\n",
                     vehicle.getId(), vehicle.getCurrentRedistributor().getId());
             Redistributor currentRedistributor = vehicle.getCurrentRedistributor();
 
@@ -101,7 +100,7 @@ public class VehicleService {
     }
 
     private void unloadDeliveries(Vehicle vehicle) {
-        System.out.printf("-> #%s descarregando encomendas no ponto de redistribuição #%s", vehicle.getId(), vehicle.getCurrentRedistributor().getId());
+        System.out.printf("-> #%s descarregando encomendas no ponto de redistribuição #%s\n", vehicle.getId(), vehicle.getCurrentRedistributor().getId());
         var currentRedistributor = vehicle.getCurrentRedistributor();
         try {
             if (vehicleHasDeliveriesToUnload(vehicle)) {

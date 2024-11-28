@@ -108,8 +108,6 @@ public class Delivery implements Runnable {
         messageMonitor.showInformation(" + Thread Pacote #"
                 + this.getId()
                 + " inicializado no ponto de redistribuição #"
-                + this.getRedistributorDestination().getId()
-                + "\n", this);
-        System.out.printf(" + Thread Pacote #%s inicializado no ponto de redistribuição #%s\n", this.getId(), this.getRedistributorOrigin().getId());
+                + this.getRedistributorDestination().getId(), this);
     }
 }
